@@ -4,6 +4,7 @@
 #include <ArduinoJson.h>
 #include "ESPMax.h"
 #include "_espmax.h"
+#include "SuctionNozzle.h"
 
 // Replace with your network credentials
 const char* ssid = "ESP32-Access-Point";
@@ -81,6 +82,7 @@ void sendSensorData() {
 void setup() {
   ESPMax_init();
   go_home(2000);
+  Nozzle_init();
 
   Serial.begin(9600);
 
@@ -105,6 +107,10 @@ void setup() {
   server.begin();
   Serial.println("WebSocket server started");
   Serial.println("Connect to the WebSocket at ws://192.168.4.1/ws");
+
+  // Hold onto the pen
+  Pump_on();
+  delay(2000);
 }
 
 unsigned long previousMillis = 0;
