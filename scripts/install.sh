@@ -33,6 +33,13 @@ BASH_RC_LINES=". $(dirname $(realpath $0))/setup.bash"
 echo "$BASH_RC_LINES" >> ~/.bashrc
 WORKSPACE_DIR="$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd)"
 echo "WORKSPACE_DIR=$WORKSPACE_DIR" >> ~/.bashrc
+
+# Install python packages
+pip install -r ./requirements.txt --break -y
+
+# Install tmux
+sudo apt install tmux -y
+
 # Clear the terminal and source the bashrc
 clear 
 exec bash
