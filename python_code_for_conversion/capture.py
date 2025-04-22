@@ -34,7 +34,7 @@ while True:
             if(abs(start_center_prev[0]-start_center[0]) <= 10 and abs(start_center_prev[1]-start_center[1]) <= 10 and 
                abs(dest_center_prev[0]-dest_center[0]) <= 10 and abs(dest_center_prev[1]-dest_center[1]) <= 10):
                 count = count + 1
-                print(count)
+                #print(count)
                 if(count > 20):
 
 
@@ -47,9 +47,9 @@ while True:
 
             else:
                 count = 0
-                print("reset")
-                print(abs(start_center_prev[0]-start_center[0]), abs(start_center_prev[1]-start_center[1]),
-                      abs(dest_center_prev[0]-dest_center[0]),abs(dest_center_prev[1]-dest_center[1]))
+                #print("reset")
+                #print(abs(start_center_prev[0]-start_center[0]), abs(start_center_prev[1]-start_center[1]),
+                #      abs(dest_center_prev[0]-dest_center[0]),abs(dest_center_prev[1]-dest_center[1]))
             start_center_prev = start_center
             dest_center_prev = dest_center
 

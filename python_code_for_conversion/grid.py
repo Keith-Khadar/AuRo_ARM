@@ -13,10 +13,8 @@ dest_final_color = [0,255,0]
 lower_white = np.array([0,0,100])
 upper_white = np.array([255,40,255])
 
-##
-## Change based on minimum arm movement
-##
 
+## Change based on minimum arm movement
 grid_size = 50
 
 def toGrid(image):
