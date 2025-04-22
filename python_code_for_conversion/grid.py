@@ -26,12 +26,6 @@ def toGrid(image):
     output_image = np.zeros(image.shape)
     output_image[np.where(white_mask==255)] = [255,255,255]
 
-    cv2.imwrite("image_copy.jpg",image)
-    cv2.imwrite("output_grid.jpg",output_image)
-
-    grid_image = image.copy()
-    grid_image[:][:][:] = 255
-
     ##
     ## Change this to make a bitmap of obstacles instead of an image
     ##
@@ -39,6 +33,9 @@ def toGrid(image):
     ## Will probably need to add start/dest points and radii arguments 
     ## so the start/dest aren't included as obstacles
     ##
+
+    grid_image = image.copy()
+    grid_image[:][:][:] = 255
 
     for i in range(0,image.shape[0]-grid_size,grid_size):
         for j in range(0,image.shape[1]-grid_size,grid_size):
@@ -54,12 +51,7 @@ def toGrid(image):
                 for x in range(i,i+grid_size):
                     for y in range(j,j+grid_size):
                         grid_image[x][y] = [0,0,0]
-    cv2.imwrite("grid_output.jpg",grid_image)
-
-    #bitmap = np.zeros()
-
-
-                    
+    cv2.imwrite("grid_output.jpg",grid_image)               
 
 
 
