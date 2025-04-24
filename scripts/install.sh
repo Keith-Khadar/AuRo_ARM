@@ -27,12 +27,24 @@ sudo apt upgrade
 
 sudo apt install ros-jazzy-desktop -y
 
+# Install the USB camera driver
+sudo apt install ros-jazzy-usb-cam -y
+pip install pydantic==1.10.9 --break
 
 # Add setup.bash to the bashrc
 BASH_RC_LINES=". $(dirname $(realpath $0))/setup.bash"
 echo "$BASH_RC_LINES" >> ~/.bashrc
 WORKSPACE_DIR="$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd)"
 echo "WORKSPACE_DIR=$WORKSPACE_DIR" >> ~/.bashrc
+
+# Copies bashrc to interactive login shells (like tmux)
+echo 'if [ -n "$BASH_VERSION" ] && [ -n "$PS1" ]; then
+	# include .bashrc if it exists
+	if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+	fi
+fi' >>~/.profile
+
 
 # Install python packages
 pip install -r ./requirements.txt --break -y
