@@ -13,9 +13,26 @@ dest_final_color = [0,255,0]
 lower_white = np.array([0,0,100])
 upper_white = np.array([255,40,255])
 
-
 ## Change based on minimum arm movement
-grid_size = 50
+grid_size = 25
+
+def toBitmapGrid(image):
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    white_mask = cv2.inRange(hsv_image, lower_white, upper_white)
+    obstacle_mask = cv2.bitwise_not(white_mask)
+
+    rows = image.shape[0]//grid_size
+    cols = image.shape[1]//grid_size
+    bitmask = np.zeros((rows,cols), dtype=np.uint8)
+
+    for i in range(rows):
+        for j in range(cols):
+            grid_cell = obstacle_mask[i*grid_size: (i+1) * grid_size,
+                                      j*grid_size: (j+1) * grid_size]
+            
+            if np.any(grid_cell == 255):
+                bitmask[i, j] = 1
+    return bitmask
 
 def toGrid(image):
     hsv_image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)

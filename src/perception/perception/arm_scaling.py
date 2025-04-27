@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import grid
 
 RES_MULT = 90
 ARUCO_SZ = 0.984252 # 25mm
@@ -50,6 +51,7 @@ if __name__ == '__main__' :
     # Output image
     #cv2.imshow("Source", image)
     cv2.imshow("Scaled", image_scaled)
-
+    grid.toGrid(image_scaled)
+    np.savetxt('bitmap.txt', grid.toBitmapGrid(image_scaled), fmt='%d')
     cv2.waitKey(0)
     cv2.destroyAllWindows()
