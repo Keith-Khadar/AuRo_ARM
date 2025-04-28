@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import .pathing
+import .grid
 
 RES_MULT = 90
 ARUCO_SZ = 0.984252 # 25mm
@@ -26,9 +28,10 @@ def homography(image):
     if (len(corners) > 3):
         print("ArUco Markers detected")
         image_aruco = cv2.aruco.drawDetectedMarkers(image.copy(), corners, ids)
-        cv2.imshow("ArUco Markers in Image", image_aruco)
+        #cv2.imshow("ArUco Markers in Image", image_aruco)
         for i in range(len(corners)):
-            print(corners[i][0], '\n')
+            #print(corners[i][0], '\n')
+            pass
     else:
         print("ERROR: Failed to detect markers")
         return image
@@ -45,3 +48,24 @@ def homography(image):
     image_scaled = cv2.warpPerspective(image, H, ((int)(width - (2*PAGE_MARGIN+ARUCO_SZ)), (int)(height - (2*PAGE_MARGIN+ARUCO_SZ))))
     return image_scaled
     
+if __name__ == '__main__' : 
+    image = cv2.imread("data/sample2.jpg")
+    result = mazeHomography(image)
+    #cv2.imshow("Source", image)
+    #cv2.imshow("Scaled", result)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
+
+    # (Optional): See input image at bitmap resolution
+    #grid.toGrid(image_scaled)
+    
+    # Testing grid with start and end
+    image2 = cv2.imread("data/point_test.jpg")
+    image2_bitmap, image2_start, image2_end = grid.toBitmapGrid(image2)
+    np.savetxt('bitmap.txt', image2_bitmap, fmt='%d')
+    
+    image2_dfs_bitmap, image2_dfs_dir = pathing.pathing_dfs(image2_bitmap, image2_start, image2_end)
+    np.savetxt('dfs_bitmap.txt', image2_dfs_bitmap, fmt='%d')
+
+    image2_bfs_bitmap, image2_bfs_dir = pathing.pathing_bfs(image2_bitmap, image2_start, image2_end)
+    np.savetxt('bfs_bitmap.txt', image2_bfs_bitmap, fmt='%d')    

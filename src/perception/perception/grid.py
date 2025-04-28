@@ -1,25 +1,42 @@
 import cv2
 import numpy as np
+import detectCircles
 
-#blue
-lower_start_color = 90
-upper_start_color = 130
-start_final_color = [255,0,0]
-
-lower_dest_color = 45
-upper_dest_color = 80
-dest_final_color = [0,255,0]
+lower_black = np.array([0,0,0])
+upper_black = np.array([180,255,50])
 
 lower_white = np.array([0,0,100])
 upper_white = np.array([255,40,255])
 
 ## Change based on minimum arm movement
-grid_size = 25
+grid_size = 50
 
+''' Converts post-homography image to map.
+    Obstacles(1) and free space(0) are just a bit map.
+    Start and End points are marked as 3 and 4 using detectCircles()
+''' 
 def toBitmapGrid(image):
+    
+    _, start_center, end_center, _, _ = detectCircles.detectCircles(image)
+    if start_center is None or end_center is None:
+        print("Error: Could not detect start and end markers")
+        return None
+    
+    start_center_x, start_center_y = start_center
+    end_center_x, end_center_y = end_center
+
+    start_grid_x = start_center_x//grid_size
+    start_grid_y = start_center_y//grid_size
+    end_grid_x = end_center_x//grid_size
+    end_grid_y = end_center_y//grid_size
+    
+    print(f"start center: ({start_center_x}, {start_center_y})")
+    print(f"end center: ({end_center_x}, {end_center_y})")
+
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     white_mask = cv2.inRange(hsv_image, lower_white, upper_white)
-    obstacle_mask = cv2.bitwise_not(white_mask)
+    obstacle_mask = cv2.inRange(hsv_image, lower_black, upper_black)
+    #obstacle_mask = cv2.bitwise_not(white_mask)
 
     rows = image.shape[0]//grid_size
     cols = image.shape[1]//grid_size
@@ -32,7 +49,11 @@ def toBitmapGrid(image):
             
             if np.any(grid_cell == 255):
                 bitmask[i, j] = 1
-    return bitmask
+    
+    bitmask[start_grid_y, start_grid_x] = 2
+    bitmask[end_grid_y, end_grid_x] = 3
+
+    return bitmask, (start_grid_x, start_grid_y), (end_grid_x, end_grid_y)
 
 def toGrid(image):
     hsv_image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
