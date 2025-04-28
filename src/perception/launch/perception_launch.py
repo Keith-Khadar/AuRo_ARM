@@ -7,7 +7,13 @@ import os
 
 def generate_launch_description():
     pkg_project_usb_cam = get_package_share_directory('usb_cam')
-    
+
+    perception = launch_ros.actions.Node(
+            package='perception',
+            executable='perception',
+            output='screen',
+            )
+
     usb_cam = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(pkg_project_usb_cam, 'launch', 'camera.launch.py')),
             launch_arguments={}.items(),
@@ -15,4 +21,5 @@ def generate_launch_description():
 
     return launch.LaunchDescription([
             usb_cam,
+            perception
         ])
