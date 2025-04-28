@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import .pathing
-import .grid
+from .pathing import pathing_dfs, pathing_bfs
+from .grid import toBitmapGrid
 
 RES_MULT = 90
 ARUCO_SZ = 0.984252 # 25mm
@@ -61,11 +61,11 @@ if __name__ == '__main__' :
     
     # Testing grid with start and end
     image2 = cv2.imread("data/point_test.jpg")
-    image2_bitmap, image2_start, image2_end = grid.toBitmapGrid(image2)
+    image2_bitmap, image2_start, image2_end = toBitmapGrid(image2)
     np.savetxt('bitmap.txt', image2_bitmap, fmt='%d')
     
-    image2_dfs_bitmap, image2_dfs_dir = pathing.pathing_dfs(image2_bitmap, image2_start, image2_end)
+    image2_dfs_bitmap, image2_dfs_dir = pathing_dfs(image2_bitmap, image2_start, image2_end)
     np.savetxt('dfs_bitmap.txt', image2_dfs_bitmap, fmt='%d')
 
-    image2_bfs_bitmap, image2_bfs_dir = pathing.pathing_bfs(image2_bitmap, image2_start, image2_end)
+    image2_bfs_bitmap, image2_bfs_dir = pathing_bfs(image2_bitmap, image2_start, image2_end)
     np.savetxt('bfs_bitmap.txt', image2_bfs_bitmap, fmt='%d')    

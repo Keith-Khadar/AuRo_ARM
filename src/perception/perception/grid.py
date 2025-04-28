@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import detectCircles
+from .detectCircles import detectCircles
 
 lower_black = np.array([0,0,0])
 upper_black = np.array([180,255,50])
@@ -17,7 +17,7 @@ grid_size = 50
 ''' 
 def toBitmapGrid(image):
     
-    _, start_center, end_center, _, _ = detectCircles.detectCircles(image)
+    _, start_center, end_center, _, _ = detectCircles(image)
     if start_center is None or end_center is None:
         print("Error: Could not detect start and end markers")
         return None
