@@ -15,9 +15,8 @@ grid_size = 50
     Obstacles(1) and free space(0) are just a bit map.
     Start and End points are marked as 3 and 4 using detectCircles()
 ''' 
-def toBitmapGrid(image):
+def toBitmapGrid(image, start_center, end_center):
     
-    _, start_center, end_center, _, _ = detectCircles(image)
     if start_center is None or end_center is None:
         print("Error: Could not detect start and end markers")
         return None

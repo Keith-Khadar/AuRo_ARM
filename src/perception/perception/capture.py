@@ -57,7 +57,7 @@ class ImageSubscriber(Node):
 
 
                         ## Convert image to bitmap/path - edit to add return value
-                        toBitmapGrid(data)
+                        toBitmapGrid(img_scaled, start_center, dest_center)
 
                         ## Add arm movement/publications here
                         print("START MOVING YA BUM!")
