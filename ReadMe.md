@@ -9,10 +9,16 @@ this path into movements for a robotic arm to draw the solution to the maze.
 
 Repo: https://github.com/Keith-Khadar/AuRo_ARM.git
 
+Using the Arduino IDE flash the ESP32 on the MaxArm with the code located in the firmware directory.
+
 `./scripts/install.sh` to install ROS2 and its dependencies.
+
+Connect to the Wifi provided by the ESP32.
 
 On separate terminals, run `ros2 launch perception perception_launch.py` and 
 `ros2 launch maxarm maxarm_launch.py` from the main workspace directory.
+
+Then run RQT and open the image viewer to see the output image.
 
 ### User Instructions
 
