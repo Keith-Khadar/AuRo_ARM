@@ -22,7 +22,7 @@ def toBitmapGrid(image, start_center, end_center, start_radius, dest_radius):
         return None
 
     cv2.circle(image,start_center,int(start_radius) + 5,(255,255,255),-1)
-    cv2.circle(image,dest_center,int(dest_radius) + 5,(255,255,255),-1)
+    cv2.circle(image,end_center,int(dest_radius) + 5,(255,255,255),-1)
     
     start_center_x, start_center_y = start_center
     end_center_x, end_center_y = end_center
