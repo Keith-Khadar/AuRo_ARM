@@ -21,8 +21,8 @@ def toBitmapGrid(image, start_center, end_center, start_radius, dest_radius):
         print("Error: Could not detect start and end markers")
         return None
 
-    cv2.circle(image,start_center,int(start_radius) + 5,(255,255,255),-1)
-    cv2.circle(image,end_center,int(dest_radius) + 5,(255,255,255),-1)
+    cv2.circle(image,start_center,int(start_radius) + 10,(255,255,255),-1)
+    cv2.circle(image,end_center,int(dest_radius) + 10,(255,255,255),-1)
     
     start_center_x, start_center_y = start_center
     end_center_x, end_center_y = end_center
@@ -39,13 +39,16 @@ def toBitmapGrid(image, start_center, end_center, start_radius, dest_radius):
     grey_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     white_mask = cv2.inRange(hsv_image, lower_white, upper_white)
     obstacle_mask = cv2.inRange(hsv_image, lower_black, upper_black)
+
+    cv2.imwrite("/home/autobot/AuRo_ARM/before.png", obstacle_mask)
     #obstacle_mask = cv2.bitwise_not(white_mask)
     #obstacle_mask = cv2.inRange(grey_image, 0, 35)
 
-    kernel = np.ones((3, 3), np.uint8) 
+    kernel = np.ones((6, 6), np.uint8) 
   
-    obstacle_mask = cv2.erode(obstacle_mask, kernel, iterations=1) 
+    obstacle_mask = cv2.dilate(obstacle_mask, kernel, iterations=3) 
 
+    cv2.imwrite("/home/autobot/AuRo_ARM/after.png", obstacle_mask)
     rows = image.shape[0]//grid_size
     cols = image.shape[1]//grid_size
     bitmask = np.zeros((rows,cols), dtype=np.uint8)
