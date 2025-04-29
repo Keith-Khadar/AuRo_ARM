@@ -1,11 +1,11 @@
-#Team 2 - Maze Drawing with Arm#
+## Team 2 - Maze Solving with Arm
 Thomas Chang, Keith Khadar, Emily Namm
 
 This project uses homography and image detection to scale a printed-out maze into a grid, 
 BFS or DFS to find a path from a given start point to a given end point, and translates 
 this path into movements for a robotic arm to draw the solution to the maze.
 
-###Setup Instructions###
+### Setup Instructions
 
 Repo: https://github.com/Keith-Khadar/AuRo_ARM.git
 
@@ -14,7 +14,7 @@ Repo: https://github.com/Keith-Khadar/AuRo_ARM.git
 On separate terminals, run `ros2 launch perception perception_launch.py` and 
 `ros2 launch maxarm maxarm_launch.py` from the main workspace directory.
 
-###User Instructions###
+### User Instructions
 
 - The maze paper must have ArUco markers on each of its corners and placed directly in 
 front of the arm. The maze itself can be either printed or drawn in black.
