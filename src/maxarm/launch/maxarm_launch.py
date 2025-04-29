@@ -7,7 +7,7 @@ def generate_launch_description():
         Node(
             package='maxarm',
             namespace='odom',
-            executable='arm_pos_publisher',
+            executable='arm_pos_pub',
             output='screen'
         ),
         Node(

@@ -47,7 +47,7 @@ fi' >>~/.profile
 
 
 # Install python packages
-pip install -r ./requirements.txt --break -y
+pip install -r ./requirements.txt --break
 
 # Install tmux
 sudo apt install tmux -y

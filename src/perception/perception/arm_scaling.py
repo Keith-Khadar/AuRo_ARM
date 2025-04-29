@@ -25,6 +25,16 @@ def homography(image):
     
     aruco_dic = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
     corners, ids, rejects = cv2.aruco.detectMarkers(gray, aruco_dic)
+   
+    if ids is None or len(ids) < 4:
+        print("ERROR: Not enough markers detected")
+        return image, False
+
+    # Sort the corners by their corresponding marker IDs
+    ids = ids.flatten()
+    sorted_indices = np.argsort(ids)
+    corners = [corners[i] for i in sorted_indices]
+
     if (len(corners) > 3):
         print("ArUco Markers detected")
         image_aruco = cv2.aruco.drawDetectedMarkers(image.copy(), corners, ids)
@@ -34,19 +44,19 @@ def homography(image):
             pass
     else:
         print("ERROR: Failed to detect markers")
-        return image
+        return image, False
 
     pts_image = np.array([
-        corners[3][0][2],
+        corners[0][0][2],
         corners[1][0][3], 
         corners[2][0][1],
-        corners[0][0][0]
+        corners[3][0][0]
     ], dtype=np.float32)
 
     # Perform homography
     H, retVal = cv2.findHomography(pts_image, pts_world)
     image_scaled = cv2.warpPerspective(image, H, ((int)(width - (2*PAGE_MARGIN+ARUCO_SZ)), (int)(height - (2*PAGE_MARGIN+ARUCO_SZ))))
-    return image_scaled
+    return image_scaled, True
     
 if __name__ == '__main__' : 
     image = cv2.imread("data/sample2.jpg")

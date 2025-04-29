@@ -8,8 +8,8 @@ upper_start_color = 130
 start_final_color = [255,0,0]
 
 #green
-lower_dest_color = 45
-upper_dest_color = 80
+lower_dest_color = 20
+upper_dest_color = 100
 dest_final_color = [0,255,0]
 
 
@@ -56,10 +56,10 @@ def circleDetector(image):
 def detectCircles(image):
     hsv_image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
 
-    lower_start = np.array([lower_start_color,100,100])
+    lower_start = np.array([lower_start_color,110,110])
     upper_start = np.array([upper_start_color,255,255])
 
-    lower_dest = np.array([lower_dest_color, 100,100])
+    lower_dest = np.array([lower_dest_color, 70,70])
     upper_dest = np.array([upper_dest_color,255,255])
 
     start_mask = cv2.inRange(hsv_image, lower_start, upper_start)
@@ -73,7 +73,7 @@ def detectCircles(image):
     output_image = image.copy()
     output_image[:,:,:] = 255
     output_image[np.where(start_mask==255)] = start_final_color
-    #cv2.imwrite("blue_only.jpg",output_image)
+    cv2.imwrite("blue_only.jpg",output_image)
     centers,radii = circleDetector(output_image)
     if(len(centers) == 0):
         return image, [], [], 0, 0
@@ -82,7 +82,7 @@ def detectCircles(image):
     output_image2 = image.copy()
     output_image2[:,:,:] = 255
     output_image2[np.where(dest_mask==255)] = dest_final_color
-    #cv2.imwrite("green_only.jpg",output_image2)
+    cv2.imwrite("green_only.jpg",output_image2)
     centers2,radii2 = circleDetector(output_image2)
     if(len(centers2) == 0):
         return image, [], [], 0, 0

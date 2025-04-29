@@ -8,6 +8,8 @@ import ament_index_python
 from .detectCircles import detectCircles
 from .grid import toBitmapGrid
 from .arm_scaling import homography
+from .pathing import pathing_bfs
+from geometry_msgs.msg import Point
 
 class ImageSubscriber(Node):
     def __init__(self):
@@ -17,33 +19,42 @@ class ImageSubscriber(Node):
         self.subscription
         
         self.ImOut = self.create_publisher(Image, '/out/image', 3)
+        self.armOut = self.create_publisher(Point, '/goal_pose', 1)
 
         self.bridge = CvBridge()
         self.start_center_prev = []
         self.dest_center_prev = []
         self.count = 0
 
-    def listener_callback(self, data):
-        print("Heard!")
+        self.isMoving = False
 
-        imCV = self.bridge.imgmsg_to_cv2(data) 
+    def listener_callback(self, data):
+        if(self.isMoving):
+            return
+
+        imCV = self.bridge.imgmsg_to_cv2(data, desired_encoding="bgr8") 
     
         # Get the default frame width and height
         frame_width = int(data.width)
         frame_height = int(data.height)
 
-        print(f"Width: {frame_width}, Height: {frame_height}")
 
         # Add Homography preprocessing
-        img_scaled = homography(imCV)
+        img_scaled, worked = homography(imCV)
         
-
-        # Convert back to Image from Cv
-        outCV = self.bridge.cv2_to_imgmsg(img_scaled, encoding="rgb8")
-        self.ImOut.publish(outCV)
+        if (worked == False):
+            # Convert back to Image from Cv
+            outCV = self.bridge.cv2_to_imgmsg(imCV, encoding="bgr8")
+            self.ImOut.publish(outCV)
+            return
+        
 
         # Find start and dest points
         frame, start_center, dest_center, start_radius, dest_radius = detectCircles(img_scaled)
+
+        # Convert back to Image from Cv
+        outCV = self.bridge.cv2_to_imgmsg(frame, encoding="bgr8")
+        self.ImOut.publish(outCV)
 
         # This code checks for green and blue circles that havent moved for twenty frames
         # Which will indicate user is done drawing and arm should start moving
@@ -53,17 +64,27 @@ class ImageSubscriber(Node):
                 abs(self.dest_center_prev[0]-dest_center[0]) <= 10 and abs(self.dest_center_prev[1]-dest_center[1]) <= 10):
                     self.count = self.count + 1
                     #print(count)
-                    if(self.count > 20):
+                    if(self.count > 10):
 
-
+                        self.isMoving = True
                         ## Convert image to bitmap/path - edit to add return value
-                        toBitmapGrid(data)
+                        bitmask, start, end = toBitmapGrid(img_scaled)
+                        print(f"Start: {start}, End: {end}")
+                        #print(pathing_bfs(bitmask, start, end))
 
                         ## Add arm movement/publications here
-                        print("START MOVING YA BUM!")
+                        new_x = (9.5)*(start[0] - 7)
+                        new_y = (10.857)*(start[1] - 9)
+                        loc = Point()
+                        loc.z = float(-132)
+                        loc.x = float(new_x)
+                        loc.y = float(new_y)
+
+                        print(f"START MOVING YA BUM! {loc}")
+                        self.armOut.publish(loc)                        
 
                         ## Add some sort of waiting condition to tell the arm to reset and get ready to draw again
-
+                        #self.isMoving = False
                 else:
                     self.count = 0
                     #print("reset")
