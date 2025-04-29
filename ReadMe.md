@@ -27,3 +27,6 @@ front of the arm. The maze itself can be either printed or drawn in black.
 - Angle the camera so that each of the ArUco markers are within frame.
 - Draw a blue dot on the maze to indicate the desired starting position.
 - Draw a green dot on the maze to indicate the desired ending position.
+
+## Link to Demo
+https://youtu.be/UKz4wESF0mw
