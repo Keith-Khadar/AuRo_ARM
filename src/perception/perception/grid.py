@@ -42,6 +42,10 @@ def toBitmapGrid(image, start_center, end_center, start_radius, dest_radius):
     #obstacle_mask = cv2.bitwise_not(white_mask)
     #obstacle_mask = cv2.inRange(grey_image, 0, 35)
 
+    kernel = np.ones((3, 3), np.uint8) 
+  
+    obstacle_mask = cv2.erode(obstacle_mask, kernel, iterations=1) 
+
     rows = image.shape[0]//grid_size
     cols = image.shape[1]//grid_size
     bitmask = np.zeros((rows,cols), dtype=np.uint8)
@@ -96,6 +100,3 @@ def toGrid(image):
 
 
 
-
-
-cv2.destroyAllWindows()
