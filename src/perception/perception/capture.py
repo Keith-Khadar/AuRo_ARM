@@ -92,7 +92,7 @@ class ImageSubscriber(Node):
                         print(new_y)
                         new_x = (-5.428)*(current_x - 18)
                         loc = Point()
-                        loc.z = float(-132)
+                        loc.z = float(-155)
                         loc.x = float(new_x)
                         loc.y = float(new_y)
 
@@ -110,7 +110,7 @@ class ImageSubscriber(Node):
                             print(new_y)
                             new_x = (-5.428)*(current_x - 18)
                             loc = Point()
-                            loc.z = float(-132)
+                            loc.z = float(-155)
                             loc.x = float(new_x)
                             loc.y = float(new_y)
                             self.armOut.publish(loc)                        
@@ -123,14 +123,26 @@ class ImageSubscriber(Node):
                         print(new_y)
                         new_x = (-5.428)*(current_x - 18)
                         loc = Point()
-                        loc.z = float(-132)
+                        loc.z = float(-155)
                         loc.x = float(new_x)
                         loc.y = float(new_y)
 
                         print(f"START MOVING YA BUM! {loc}")
                         self.armOut.publish(loc)                        
                         time.sleep(2)
-                        #self.isMoving = False
+
+                        
+                        loc = Point()
+                        loc.z = float(0)
+                        loc.x = float(0)
+                        loc.y = float(0)
+
+                        print(f"START MOVING YA BUM! {loc}")
+                        self.armOut.publish(loc)                        
+                        print("hellow?")
+
+                        self.isMoving = False
+                        time.sleep(10)
                 else:
                     self.count = 0
                     #print("reset")

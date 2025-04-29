@@ -59,7 +59,7 @@ def detectCircles(image):
     lower_start = np.array([lower_start_color,150,150])
     upper_start = np.array([upper_start_color,255,255])
 
-    lower_dest = np.array([lower_dest_color, 150,0])
+    lower_dest = np.array([lower_dest_color, 150,100])
     upper_dest = np.array([upper_dest_color,255,255])
 
     start_mask = cv2.inRange(hsv_image, lower_start, upper_start)
