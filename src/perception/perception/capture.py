@@ -80,7 +80,7 @@ class ImageSubscriber(Node):
 
                         self.isMoving = True
                         ## Convert image to bitmap/path - edit to add return value
-                        bitmask, start, end = toBitmapGrid(img_scaled, start_center, dest_center)
+                        bitmask, start, end = toBitmapGrid(img_scaled, start_center, dest_center, start_radius, dest_radius)
                         print(f"Start: {start}, End: {end}")
                         _, directions = pathing_bfs(bitmask, start, end)
                         print(_, directions)

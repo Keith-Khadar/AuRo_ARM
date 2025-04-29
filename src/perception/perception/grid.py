@@ -3,7 +3,7 @@ import numpy as np
 from .detectCircles import detectCircles
 
 lower_black = np.array([0,0,0])
-upper_black = np.array([180, 255, 10])
+upper_black = np.array([180, 255, 100])
 
 lower_white = np.array([0,0,100])
 upper_white = np.array([255,40,255])
@@ -15,11 +15,14 @@ grid_size = 25
     Obstacles(1) and free space(0) are just a bit map.
     Start and End points are marked as 3 and 4 using detectCircles()
 ''' 
-def toBitmapGrid(image, start_center, end_center):
+def toBitmapGrid(image, start_center, end_center, start_radius, dest_radius):
     
     if start_center is None or end_center is None:
         print("Error: Could not detect start and end markers")
         return None
+
+    cv2.circle(image,start_center,int(start_radius) + 5,(255,255,255),-1)
+    cv2.circle(image,dest_center,int(dest_radius) + 5,(255,255,255),-1)
     
     start_center_x, start_center_y = start_center
     end_center_x, end_center_y = end_center
