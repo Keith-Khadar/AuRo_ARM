@@ -19,7 +19,7 @@ class ImageSubscriber(Node):
         self.subscription
         
         self.ImOut = self.create_publisher(Image, '/out/image', 3)
-        self.armOut = self.create_publisher(Point, '/goal_pose', 1)
+        self.armOut = self.create_publisher(Point, '/set_pos/goal_pose', 1)
 
         self.bridge = CvBridge()
         self.start_center_prev = []
@@ -27,6 +27,16 @@ class ImageSubscriber(Node):
         self.count = 0
 
         self.isMoving = False
+
+
+        loc = Point()
+        loc.z = float(0)
+        loc.x = float(0)
+        loc.y = float(0)
+
+        print(f"START MOVING YA BUM! {loc}")
+        self.armOut.publish(loc)                        
+        print("hellow?")
 
     def listener_callback(self, data):
         if(self.isMoving):
@@ -68,13 +78,13 @@ class ImageSubscriber(Node):
 
                         self.isMoving = True
                         ## Convert image to bitmap/path - edit to add return value
-                        bitmask, start, end = toBitmapGrid(img_scaled)
+                        bitmask, start, end = toBitmapGrid(img_scaled, start_center, dest_center)
                         print(f"Start: {start}, End: {end}")
                         #print(pathing_bfs(bitmask, start, end))
 
                         ## Add arm movement/publications here
-                        new_x = (9.5)*(start[0] - 7)
-                        new_y = (10.857)*(start[1] - 9)
+                        new_y = (9.5)*(start[0] - 7)
+                        new_x = (-10.857)*(start[1] - 9)
                         loc = Point()
                         loc.z = float(-132)
                         loc.x = float(new_x)
@@ -82,6 +92,7 @@ class ImageSubscriber(Node):
 
                         print(f"START MOVING YA BUM! {loc}")
                         self.armOut.publish(loc)                        
+                        print("hellow?")
 
                         ## Add some sort of waiting condition to tell the arm to reset and get ready to draw again
                         #self.isMoving = False

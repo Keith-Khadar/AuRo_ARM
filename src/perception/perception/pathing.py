@@ -143,7 +143,3 @@ def pathing_bfs(bitmap, start, end):
         bitmap_bfs[y,x] = 4
 
     return bitmap_bfs, directions
-
-map = [[0,0,0],[0,0,0],[0,1,0],[0,0,0],[0,0,0]]
-
-pathing_bfs(map, (0,0), (2,4))
