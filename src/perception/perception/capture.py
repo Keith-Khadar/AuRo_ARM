@@ -10,6 +10,8 @@ from .grid import toBitmapGrid
 from .arm_scaling import homography
 from .pathing import pathing_bfs
 from geometry_msgs.msg import Point
+import time
+
 
 class ImageSubscriber(Node):
     def __init__(self):
@@ -80,11 +82,15 @@ class ImageSubscriber(Node):
                         ## Convert image to bitmap/path - edit to add return value
                         bitmask, start, end = toBitmapGrid(img_scaled, start_center, dest_center)
                         print(f"Start: {start}, End: {end}")
-                        #print(pathing_bfs(bitmask, start, end))
-
+                        _, directions = pathing_bfs(bitmask, start, end)
+                        print(_, directions)
                         ## Add arm movement/publications here
-                        new_y = (9.5)*(start[0] - 7)
-                        new_x = (-10.857)*(start[1] - 9)
+                        current_x = start[1]
+                        current_y = start[0]
+
+                        new_y = (4.75)*(current_y - 14)
+                        print(new_y)
+                        new_x = (-5.428)*(current_x - 18)
                         loc = Point()
                         loc.z = float(-132)
                         loc.x = float(new_x)
@@ -92,9 +98,38 @@ class ImageSubscriber(Node):
 
                         print(f"START MOVING YA BUM! {loc}")
                         self.armOut.publish(loc)                        
-                        print("hellow?")
+                        
+                        time.sleep(2)
 
-                        ## Add some sort of waiting condition to tell the arm to reset and get ready to draw again
+                        for direction in directions:
+                            current_x += direction[0]
+                            current_y += direction[1]
+                            
+                            ## Add arm movement/publications here
+                            new_y = (4.75)*(current_y - 14)
+                            print(new_y)
+                            new_x = (-5.428)*(current_x - 18)
+                            loc = Point()
+                            loc.z = float(-132)
+                            loc.x = float(new_x)
+                            loc.y = float(new_y)
+                            self.armOut.publish(loc)                        
+                            time.sleep(1)
+   
+                        current_x = end[1]
+                        current_y = end[0]
+
+                        new_y = (4.75)*(current_y - 14)
+                        print(new_y)
+                        new_x = (-5.428)*(current_x - 18)
+                        loc = Point()
+                        loc.z = float(-132)
+                        loc.x = float(new_x)
+                        loc.y = float(new_y)
+
+                        print(f"START MOVING YA BUM! {loc}")
+                        self.armOut.publish(loc)                        
+                        time.sleep(2)
                         #self.isMoving = False
                 else:
                     self.count = 0

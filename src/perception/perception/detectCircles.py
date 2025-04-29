@@ -56,7 +56,7 @@ def circleDetector(image):
 def detectCircles(image):
     hsv_image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
 
-    lower_start = np.array([lower_start_color,150,0])
+    lower_start = np.array([lower_start_color,150,150])
     upper_start = np.array([upper_start_color,255,255])
 
     lower_dest = np.array([lower_dest_color, 150,0])

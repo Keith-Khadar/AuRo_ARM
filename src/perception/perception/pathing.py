@@ -79,6 +79,7 @@ def pathing_dfs(bitmap, start, end):
 ''' 
 def pathing_bfs(bitmap, start, end):
     rows, cols = bitmap.shape
+    print(bitmap)
     visited = np.zeros((rows, cols), dtype = bool)
     bitmap_bfs = bitmap.copy()
 
@@ -95,7 +96,7 @@ def pathing_bfs(bitmap, start, end):
     # In the beginning only start is initialized
     queue = deque()
     queue.append((start))
-    visited[start] = True
+    visited[start[1], start[0]] = True
 
     while queue:
         x,y = queue.popleft()

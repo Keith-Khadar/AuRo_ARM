@@ -3,13 +3,13 @@ import numpy as np
 from .detectCircles import detectCircles
 
 lower_black = np.array([0,0,0])
-upper_black = np.array([180,255,50])
+upper_black = np.array([180, 255, 10])
 
 lower_white = np.array([0,0,100])
 upper_white = np.array([255,40,255])
 
 ## Change based on minimum arm movement
-grid_size = 50
+grid_size = 25
 
 ''' Converts post-homography image to map.
     Obstacles(1) and free space(0) are just a bit map.
@@ -33,9 +33,11 @@ def toBitmapGrid(image, start_center, end_center):
     print(f"end center: ({end_center_x}, {end_center_y})")
 
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    grey_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     white_mask = cv2.inRange(hsv_image, lower_white, upper_white)
     obstacle_mask = cv2.inRange(hsv_image, lower_black, upper_black)
     #obstacle_mask = cv2.bitwise_not(white_mask)
+    #obstacle_mask = cv2.inRange(grey_image, 0, 35)
 
     rows = image.shape[0]//grid_size
     cols = image.shape[1]//grid_size
